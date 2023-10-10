@@ -14,7 +14,13 @@ func home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ts, err := template.ParseFiles("./ui/html/pages/home.html")
+	files := []string{
+		"./ui/html/pages/base.html",
+		"./ui/html/partials/nav.html",
+		"./ui/html/pages/home.html",
+	}
+
+	ts, err := template.ParseFiles(files...)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -23,7 +29,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 2nd param is data we want ot inject
-	err = ts.Execute(w, nil)
+	err = ts.ExecuteTemplate(w, "base", nil)
 
 	if err != nil {
 		log.Println(err.Error())
