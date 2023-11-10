@@ -2,7 +2,7 @@ package main
 
 import "net/http"
 
-func (app *application) routes(cfg config) *http.ServeMux {
+func (app *application) routes(cfg config) http.Handler {
 	mux := http.NewServeMux()
 
 	fileServer := http.FileServer(http.Dir(cfg.staticDir))
@@ -12,5 +12,5 @@ func (app *application) routes(cfg config) *http.ServeMux {
 	mux.HandleFunc("/snippet/view", app.snippetView)
 	mux.HandleFunc("/snippet/create", app.snippetCreate)
 
-	return mux
+	return secureHeaders(mux)
 }
