@@ -22,6 +22,9 @@ func (app *application) routes(cfg config) http.Handler {
 	// return standard.Then(mux)
 
 	router := httprouter.New()
+	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		app.notFound(w)
+	})
 
 	fileServer := http.FileServer(http.Dir(cfg.staticDir))
 	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
