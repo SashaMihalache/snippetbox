@@ -82,5 +82,14 @@ func (app *application) decodePostForm(r *http.Request, dst any) error {
 }
 
 func (app *application) isAuthenticated(r *http.Request) bool {
-	return app.sessionManager.Exists(r.Context(), "authenticatedUserID")
+	// return app.sessionManager.Exists(r.Context(), "authenticatedUserID")
+
+	// now we get the value from the context that was set in the middleware if the user was indeed authetnicated
+	isAuthenticated, ok := r.Context().Value(isAuthenticatedContextKey).(bool)
+
+	if !ok {
+		return false
+	}
+
+	return isAuthenticated
 }
